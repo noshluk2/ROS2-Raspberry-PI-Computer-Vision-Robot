@@ -11,6 +11,7 @@ while True:
     # height = cap. get(cv2. CAP_PROP_FRAME_HEIGHT )
 
     ## Region of Interest
+    f_1=frame
     frame = frame[300:440,100:550]
 
     ## Extraction of Edges
@@ -44,9 +45,15 @@ while True:
     # Error is positive -> move left ( rotate counter ClockWise)
     # Error is negative -> Move Right ( rotate ClockWise)
     print(error)
+    e_1=cv2.Canny(blurred_frame, 95, 100)
+    cv2.imshow("Robot Camera", f_1)
+    cv2.imshow("Region of Interest", frame)
+    cv2.imshow("Edge Extraction", e_1)
+    cv2.imshow("Line Following", edged)
 
 
-    cv2.imshow("Canny Output", edged)
+
+
     key = cv2.waitKey(1000) ## Increase the waitkey to give a delay
     if key == 27:
         break
