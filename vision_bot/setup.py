@@ -14,6 +14,7 @@ setup(
         (os.path.join('share', package_name,'launch'), glob('launch/*')),
         (os.path.join('share', package_name,'urdf'), glob('urdf/*')),
         (os.path.join('share', package_name,'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name,'models'), glob('models/*')),
 
     ],
     install_requires=['setuptools'],
@@ -28,6 +29,7 @@ setup(
             'line_following_node = vision_bot.line_following:main',
             'camera_node = vision_bot.camera_show:main',
             'drive_node = vision_bot.driver:main',
+            'sdfSpawner_node = vision_bot.sdf_spawner:main',
         ],
     },
 )
