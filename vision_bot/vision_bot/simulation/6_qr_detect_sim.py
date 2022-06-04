@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+'''
+> Purpose :
+This Node is going to save video feed from the upper camera from the simulation .
+Which is going to be utilized for furthur image processing to solve the maze .
+
+
+> Usage :
+You need to write below command in terminal where your pacakge is sourced
+- ros2 run maze_bot video_recorder
+
+Note : name of the node is actually name of executable file described in setup.py file of our package and not the name of python file
+
+> Inputs:
+This node is a Subscriber of '/upper_camera/image_raw' topic which is 30 fps video from camera above the maze
+and image is of the size 1280x720 ( RGB )
+
+> Outputs:
+This node is just a scriber so output is is not in terms of ROS topic but a video is going to be saved on the disk.
+
+
+> Instructor Comments :
+I wish , students make below changes into the code
+- Remove Opencv Dependency
+- Resize images and save different sized video
+- - Use proper names for the class,node, call back functions and variables
+- Add ROS2 logging functionality
+- Add comments into functions
+
+Author :
+M.Luqman
+
+Date :
+16/03/22
+'''
+
+import rclpy
+import cv2
+from rclpy.node import Node
+from cv_bridge import CvBridge
+from sensor_msgs.msg import Image
+
+class Video_get(Node):
+  def __init__(self):
+    super().__init__('video_subscriber')# node name
+    ## Created a subscriber
+    self.subscriber = self.create_subscription(Image,'/frontCam/image_raw',self.process_data,10)
+    self.bridge = CvBridge()
+
+    self.line_mid_point=0
+  def process_data(self, data):
+    frame = self.bridge.imgmsg_to_cv2(data,'bgr8') # performing conversion
+    decoder = cv2.QRCodeDetector()
+    data, points, _ = decoder.detectAndDecode(frame)
+
+
+    if points is not None:
+        print('Decoded data: ' + data)
+
+        points = points[0]
+        for i in range(len(points)):
+            pt1 = [int(val) for val in points[i]]
+            pt2 = [int(val) for val in points[(i + 1) % 4]]
+            cv2.line(frame, pt1, pt2, color=(255, 0, 0), thickness=3)
+
+    cv2.imshow("Frame", frame) # displaying what is being recorded
+    cv2.waitKey(1) # will save video until it is interrupted
+
+
+
+def main(args=None):
+  rclpy.init(args=args)
+  image_subscriber = Video_get()
+  rclpy.spin(image_subscriber)
+  rclpy.shutdown()
+
+if __name__ == '__main__':
+  main()

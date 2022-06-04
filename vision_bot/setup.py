@@ -26,10 +26,13 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'line_following_node = vision_bot.line_following:main',
-            'camera_node = vision_bot.camera_show:main',
-            'drive_node = vision_bot.driver:main',
-            'sdfSpawner_node = vision_bot.sdf_spawner:main',
+            'line_following_node = vision_bot.3_line_following_sim:main',
+            'camera_node = vision_bot.2_camera_show:main',
+            'drive_node = vision_bot.1_driver:main',
+            'sdfSpawner_node = vision_bot.1_sdf_spawner:main',
+            'qr_detection_node = vision_bot.6_qr_detect_sim:main',
+            'test_node = vision_bot.test:main',
+            'car_drive_node = vision_bot.cmd_vel_to_motors:main',
         ],
     },
 )
