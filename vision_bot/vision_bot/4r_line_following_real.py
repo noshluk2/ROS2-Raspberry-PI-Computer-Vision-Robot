@@ -1,5 +1,10 @@
 #!/usr/bin/python3
+'''
+This nodes subscribes to Video stream from raspberry pi
+performs operations on laptop
 
+publishes motor velocities
+'''
 import cv2
 import numpy as np
 cap = cv2.VideoCapture('tapes.avi')

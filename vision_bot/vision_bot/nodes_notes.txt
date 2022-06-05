@@ -1,0 +1,10 @@
+Explaination of node names starting with
+
+"r" :
+    running on raspberry pi
+
+"s" :
+    running on pc
+
+"number":
+    Represents order for lectures
