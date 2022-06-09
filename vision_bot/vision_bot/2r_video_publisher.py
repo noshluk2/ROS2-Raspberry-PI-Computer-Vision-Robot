@@ -46,24 +46,27 @@ import os
 class Video_get(Node):
   def __init__(self):
     super().__init__('video_publisher_node')
+    print("Camera Node Started")
     self.bridge = CvBridge()
     self.img_msg=Image()
     self.camera = cv2.VideoCapture(0)
+    self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
     self.sequence=0
 
-    self.video_publisher = self.create_publisher(Image,'/front_cam',10)
-    timer_period = 0.5
+    self.video_publisher = self.create_publisher(Image,'/Image',1)
+    timer_period = 0.1
     self.timer = self.create_timer(timer_period, self.publish_video)
 
 
   def publish_video(self):
     _, cv_image = self.camera.read()
-    self.img_msg=self.bridge.cv2_to_imgmsg(cv_image, "bgr8")
+    cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+    self.img_msg=self.bridge.cv2_to_imgmsg(cv_image, "mono8")
     self.img_msg.header.frame_id=str(self.sequence)
     self.img_msg.header.stamp = Node.get_clock(self).now().to_msg()
     self.video_publisher.publish(self.img_msg)
     self.sequence +=1
-    print(self.img_msg," / ", cv_image)
 
 
 def main(args=None):

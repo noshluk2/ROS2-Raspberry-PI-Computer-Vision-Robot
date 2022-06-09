@@ -21,6 +21,12 @@
 - ### GPIO
 -  sudo chown ubuntu /dev/gpiomem
 -  sudo chmod g+rw /dev/gpiomem
+## Camera Publishing
+    - #### Raspberry pi ( publisher)
+        - ros2 run image_tools cam2image --ros-args -p burger_mode:=false -p frequency:=5. -p reliability:=best_effort
+    - #### PC ( Subscriber )
+        - ros2 run image_tools showimage --ros-args -p show_image:=true -p reliability:=best_effort
+
 - ### Camera on Ubuntu
 
     - v4l2-ctl --list-devices

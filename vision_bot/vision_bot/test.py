@@ -10,9 +10,8 @@ def main():
         _,frame = video_in.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         print(frame.shape)
-        print(gray.type)
-        # cv2.imshow("frame",frame)
-        # cv2.waitKey(1)
+        cv2.imshow("frame",frame)
+        cv2.waitKey(1)
 
 if __name__ == '__main__':
 	main()
