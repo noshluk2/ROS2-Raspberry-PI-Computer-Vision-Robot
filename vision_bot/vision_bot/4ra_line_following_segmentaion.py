@@ -17,9 +17,11 @@ from std_msgs.msg import Int16
 class Video_get(Node):
   def __init__(self):
     super().__init__('video_subscriber')
+    print("Node Started")
     self.subscriber = self.create_subscription(Image,'/Image',self.process_data,10)
     self.bridge = CvBridge() # converting ros images to opencv data
     self.error_value_publisher = self.create_publisher(Int16, '/line_following_error', 10)
+
     self.error_msg = Int16()
     self.line_mid_point=0
 
@@ -29,7 +31,7 @@ class Video_get(Node):
     cv2.imshow("Frame", frame)
     frame = frame[160:475,100:470] ## first is Y then its X
     blurred_frame = cv2.GaussianBlur(frame, (5, 5), 2)
-    edged = cv2.Canny(blurred_frame, 0, 40)
+    edged = cv2.Canny(blurred_frame, 0, 75)
 
     white_inx=[]
     for index,value in enumerate(edged[:][280]): # this value is Y axis of edged frame
@@ -50,12 +52,13 @@ class Video_get(Node):
     # ## Generating a reference point to calculate Error
     goal_point  = [185 , 280]
     cv2.circle(img=edged, center = (goal_point[0],goal_point[1]), radius =5, color =(255,0,0), thickness=5)
-    self.error_msg = int( goal_point[0] - self.line_mid_point )
+    self.error_msg.data = int( goal_point[0] - self.line_mid_point )
 
     ## Conclusion
     # Error is positive -> move left ( rotate counter ClockWise)
     # Error is negative -> Move Right ( rotate ClockWise)
     self.error_value_publisher.publish(self.error_msg)
+    print(self.error_msg.data)
     cv2.imshow("Edge", edged)
 
     cv2.waitKey(1)

@@ -16,7 +16,7 @@ def generate_launch_description():
             ),
             Node(
                 package="vision_bot",
-                executable="sdfSpawner_node",
+                executable="sdfSpawner",
                 arguments=[qr_maze_path,"Maze"],
                 output= 'screen'
             ),

@@ -16,7 +16,7 @@ def generate_launch_description():
             ),
             Node(
                 package="vision_bot",
-                executable="sdfSpawner_node",
+                executable="sdfSpawner",
                 arguments=[line_path,"Black_line"],
                 output= 'screen'
             ),
